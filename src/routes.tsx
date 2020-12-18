@@ -6,8 +6,8 @@ import CreateLocation from "./pages/CreateLocation"
 const Routes = () => {
     return(
       <BrowserRouter>
-          <Route component={Home} path={'/'} exact />
-          <Route component={CreateLocation} path={'/create-location'}/>
+          <Route component={Home} path='/' exact />
+          <Route component={CreateLocation} path='/create-location'/>
       </BrowserRouter>
     );
 }
