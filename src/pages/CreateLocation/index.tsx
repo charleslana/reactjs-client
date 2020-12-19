@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, FormEvent, useCallback, useEffect, useState} from "react";
 import {Link} from 'react-router-dom';
 import {FiArrowLeft} from 'react-icons/fi';
 import {Map, TileLayer, Marker} from 'react-leaflet';
@@ -34,19 +34,19 @@ const CreateLocation: React.FC = () => {
         });
     }, []);
 
-    function handleMapClick(event: LeafletMouseEvent): void {
+    const handleMapClick = useCallback((event: LeafletMouseEvent): void => {
         setSelectedMapPosition([
             event.latlng.lat,
             event.latlng.lng
         ]);
-    }
+    },[]);
 
-    function handleInputChange(event: ChangeEvent<HTMLInputElement>){
+    const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
         setFormData({...formData, [name]: value});
-    }
+    },[formData]);
 
-    function handleSelectItem(id: number) {
+    const handleSelectItem = useCallback((id: number) => {
         const alreadySelected = selectedItems.findIndex(item => item === id);
         if(alreadySelected >= 0) {
             const filteredItems = selectedItems.filter(item => item !== id);
@@ -55,9 +55,9 @@ const CreateLocation: React.FC = () => {
         else {
             setSelectedItems([...selectedItems, id]);
         }
-    }
+    },[selectedItems]);
 
-    async function handleSubmit(event: FormEvent) {
+    const handleSubmit = useCallback(async (event: FormEvent) => {
         event.preventDefault();
 
         const {name, email, whatsapp, city, uf} = formData;
@@ -78,7 +78,7 @@ const CreateLocation: React.FC = () => {
 
 
         await api.post('locations', data);
-    }
+    }, [formData,selectedItems,selectedMapPosition]);
 
     return (
         <div id="page-create-location">
